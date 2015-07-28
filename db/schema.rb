@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150722160205) do
+ActiveRecord::Schema.define(version: 20150728142252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,21 @@ ActiveRecord::Schema.define(version: 20150722160205) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "middle_name"
+    t.integer  "place_id"
   end
+
+  add_index "people", ["place_id"], name: "index_people_on_place_id", using: :btree
+
+  create_table "pets", force: :cascade do |t|
+    t.string   "name"
+    t.string   "species"
+    t.string   "dob"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "person_id"
+  end
+
+  add_index "pets", ["person_id"], name: "index_pets_on_person_id", using: :btree
 
   create_table "places", force: :cascade do |t|
     t.string   "city"
@@ -35,4 +49,6 @@ ActiveRecord::Schema.define(version: 20150722160205) do
     t.string   "country"
   end
 
+  add_foreign_key "people", "places"
+  add_foreign_key "pets", "people"
 end
